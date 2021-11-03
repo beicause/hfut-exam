@@ -63,8 +63,9 @@ export default {
                 message: '取消成功',
                 type: 'success'
               });
-              this.$router.replace('/change');
+              // this.$router.replace('/change');
             }
+            this.getAllApply()
 
           })
           .catch(fail => {

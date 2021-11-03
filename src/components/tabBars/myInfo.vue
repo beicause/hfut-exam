@@ -92,6 +92,7 @@
 import axios from 'axios';
 import Qs from 'qs';
 import {host} from '../../network.js'
+import store from '../../store/index.js';
 import tabBar from './tabBar.vue'
 
 export default {
@@ -102,7 +103,6 @@ export default {
       account: "",
       password: "",
       name: "",
-      num: 0,
     }
   },
   mounted() {
@@ -111,10 +111,13 @@ export default {
     if (localStorage.token) {
       this.isLogin = true;
       this.name = localStorage.name;
-      this.num = (Number)(localStorage.num);
     } else {
       this.isLogin = false;
-      this.num = 0;
+    }
+  },
+  computed:{
+    num(){
+      return store.state.listUnfinished.length
     }
   },
   methods: {

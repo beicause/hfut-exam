@@ -8,7 +8,7 @@
     <el-tabs style="padding-top: 55px;" v-model="activeName" :stretch="true">
       <el-tab-pane label="全部监考" name="allSchedule">
 
-        <arrange @sendParent="getCourseInfo" :list="list" v-if="loadAll === 2"></arrange>
+        <arrange @sendParent="getCourseInfo" :list="courseList"></arrange>
 
       </el-tab-pane>
     </el-tabs>
@@ -53,8 +53,8 @@
 import arrange from '../others/arrange.vue'
 import {host} from "../../network";
 import axios from 'axios'
-import Qs from 'qs';
 import tabBar from "./tabBar";
+import store from '../../store';
 
 export default {
   name: "allInvigilationInfo",
@@ -62,34 +62,25 @@ export default {
     arrange,
     tabBar,
   },
+  created(){
+    store.dispatch('getUnfinished')
+  },
   data() {
     return {
       activeName: 'allSchedule',
-      loadAll: 0,
+      // loadAll: 0,
       mask: false,
-      courseList: [],
-      list: [], //list: [[],[],[],[],[],[],[]],
-      num: 0,
+      // list: [], //list: [[],[],[],[],[],[],[]],
       data: {},
     }
   },
-  created() {
-    // 判断是星期几
-    this.getTheDay();
-    // 判断是否登录
-    if (!localStorage.token) {
-      this.$notify({
-        title: '',
-        message: '请先登录..',
-        type: 'warning'
-      });
-      this.$router.push({path: '/myInfo'});
-    } else {
-      this.getDayOfIt();
-      this.num = (Number)(localStorage.num);
+  computed:{
+    courseList() {
+      return store.state.listUnfinished
+    },
+    num(){
+      return store.state.listUnfinished.length
     }
-
-
   },
   methods: {
     // 判断是星期几
@@ -126,54 +117,21 @@ export default {
     },
 
 
-    // 获取每一天的课程
-    getEveryday() {
-      this.list = [];
-      console.log(this.list);
-      for (var i = 0; i < this.courseList.length; i++) {
-        // let dateArray = this.courseList[i].date.split("-");
-        // let date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2])
-        // let day = (Number)(date.getDay());
-        this.list.push(this.courseList[i]);
-      }
-      console.log(this.list);
-      this.loadAll++;
-    },
+    // // 获取每一天的课程
+    // getEveryday() {
+    //   this.list = [];
+    //   console.log(this.list);
+    //   for (var i = 0; i < this.courseList.length; i++) {
+    //     // let dateArray = this.courseList[i].date.split("-");
+    //     // let date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2])
+    //     // let day = (Number)(date.getDay());
+    //     this.list.push(this.courseList[i]);
+    //   }
+    //   console.log(this.list);
+    //   this.loadAll++;
+    // },
 
     // 获取这一周的所有
-    getDayOfIt() {
-      let token = localStorage.token;
-      // 没有完成的监考
-      axios.get(host.ip + "/teacher/unfinished", {
-        headers: {
-          'token': token
-        },
-        responseType: 'json',
-      })
-        .then(suc => {
-          if (suc.data.code === 0) {
-            this.courseList = suc.data.data;
-            console.log(this.courseList);
-            this.loadAll++;
-            this.getEveryday();
-            localStorage.num = this.courseList.length;
-          } else {
-            this.$notify({
-              title: '',
-              message: suc.data.msg,
-              type: 'error'
-            });
-          }
-        })
-        .catch(fail => {
-          console.log(fail);
-          this.$notify({
-            title: '',
-            message: '出错了..',
-            type: 'error'
-          });
-        })
-    }
   }
 }
 

@@ -2,8 +2,7 @@
   <div class="arrange">
     <ul v-if="!isNull" class="list-carpper">
       <li v-for="item in list" :key="item.examCode" :ID='item.examCode' @click="pop($event)"
-          class="item" :style="{'background': color[Math.floor(Math.random()*4)]}">
-        <!--  -->
+          class="item" :style="{'background': getColor(item.examCode)}">
         <h3>{{ item.name }}</h3>
         <h5>{{ item.address }}</h5>
         <h5>{{ item.date }}</h5>
@@ -19,8 +18,7 @@
 </template>
 
 <script>
-import {host} from '../../network';
-import axios from 'axios';
+import store from "../../store";
 
 export default {
   props: {
@@ -31,26 +29,22 @@ export default {
   }, // 父组件传递给子组件的数据
   data() {
     return {
-      isNull: false,
       data: {},
       message: {list: null},
-      color: ["#A9E2F3", "#6E6E6E", "#BDBDBD", "#819FF7"]
     }
   },
-  created() {
-    // this.list = this.message.list;
-    if (this.list.length === 0) {
-      this.isNull = true;
-      console.log("true");
-    } else {
-      this.isNull = false;
-      console.log("false, the list is null");
+  computed:{
+    isNull(){
+      return this.list.length===0
     }
   },
   methods: {
     pop(e) {
       let examID = e.currentTarget.getAttribute('ID');
       this.$emit("sendParent", examID);
+    },
+    getColor(examCode){
+      return store.state.codeColorMap.get(examCode)
     }
   }
 }

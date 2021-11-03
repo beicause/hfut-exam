@@ -27,10 +27,9 @@
 <script>
 import tabBar from './tabBar.vue'
 import axios from 'axios'
-import Qs from 'qs'
 import {host} from '../../network'
 import {MessageBox} from 'mint-ui';
-import {Indicator} from 'mint-ui';
+import store from '../../store';
 
 export default {
   name: "changeSquare",
@@ -39,24 +38,17 @@ export default {
   },
   data() {
     return {
-      num: 0,
-      list: []
     }
   },
-  mounted() {
-    // 没有登录
-    if (!localStorage.token) {
-      this.$notify({
-        title: '',
-        message: '请先登录..',
-        type: 'warning'
-      });
-      this.$router.push({path: '/myInfo'});
-
-    } else {
-      Indicator.open();
-      this.getAllCourse();
-      this.num = (Number)(localStorage.num);
+  created(){
+    store.dispatch('getUnfinished')
+  },
+  computed: {
+    list(){
+      return store.state.listUnfinished
+    },
+    num(){
+      return store.state.listUnfinished.length
     }
   },
   methods: {
@@ -82,7 +74,7 @@ export default {
                 message: '申请成功',
                 type: 'success'
               });
-              this.$router.replace('/myApply');
+              // this.$router.replace('/myInfo/myApply');
             } else if (suc.data.code === -1) {
               this.$notify({
                 title: '',
@@ -96,49 +88,53 @@ export default {
                 type: 'error'
               });
             }
+            store.dispatch('getUnfinished')
           })
           .catch(fail => {
+            console.log(fail);
             this.$notify({
               title: '',
               message: '出错了...',
               type: 'error'
             });
           })
-      });
+      }).catch((e)=>{
+        
+      })
     },
     // 获取所有的 监考
-    getAllCourse() {
-      let token = localStorage.token;
-      // 没有完成的监考
-      axios.get(host.ip + "/teacher/unfinished", {
-        headers: {
-          'token': token
-        },
-        responseType: 'json',
-      })
-        .then(suc => {
-          if (suc.data.code === 0) {
-            this.list = suc.data.data;
-            // console.log(this.list);
-            localStorage.num = this.list.length;
-            this.num = (Number)(localStorage.num);
-            Indicator.close();
-          } else {
-            this.$notify({
-              title: '',
-              message: '出错了..',
-              type: 'error'
-            });
-          }
-        })
-        .catch(fail => {
-          this.$notify({
-            title: '',
-            message: '出错了..',
-            type: 'error'
-          });
-        })
-    }
+    // getAllCourse() {
+    //   let token = localStorage.token;
+    //   // 没有完成的监考
+    //   axios.get(host.ip + "/teacher/unfinished", {
+    //     headers: {
+    //       'token': token
+    //     },
+    //     responseType: 'json',
+    //   })
+    //     .then(suc => {
+    //       if (suc.data.code === 0) {
+    //         this.list = suc.data.data;
+    //         // console.log(this.list);
+    //         localStorage.num = this.list.length;
+    //         this.num = (Number)(localStorage.num);
+    //         Indicator.close();
+    //       } else {
+    //         this.$notify({
+    //           title: '',
+    //           message: '出错了..',
+    //           type: 'error'
+    //         });
+    //       }
+    //     })
+    //     .catch(fail => {
+    //       this.$notify({
+    //         title: '',
+    //         message: '出错了..',
+    //         type: 'error'
+    //       });
+    //     })
+    // }
   }
 }
 

@@ -27,13 +27,13 @@ import GoEasy from "goeasy";
 Vue.use(MintUI)
 
 /* eslint-disable no-new */
-new Vue({
-    el: '#app',
-    router,
-    components: { App },
-    template: '<App/>'
+const vm=new Vue({
+    ...App,
+    router
 })
+vm.$mount('#app')
 
+export { vm }
 
 // Vue.prototype.goeasy = GoEasy.getInstance({
 //   host:"hangzhou.goeasy.io",  //若是新加坡区域：singapore.goeasy.io
