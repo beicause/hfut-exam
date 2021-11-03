@@ -2,11 +2,11 @@
   <div class="arrange">
     <ul v-if="!isNull" class="list-carpper">
       <li v-for="item in list" :key="item.examCode" :ID='item.examCode' @click="pop($event)"
-          class="item" :style="{'background': getColor(item.examCode)}">
-        <h3>{{ item.name }}</h3>
-        <h5>{{ item.address }}</h5>
-        <h5>{{ item.date }}</h5>
-        <h5>{{ item.startTime }} ~ {{ item.endTime }}</h5>
+          class="item" :style="getColor(item.examCode)">
+        <h3 :style="getColor(item.examCode)">{{ item.name }}</h3>
+        <h5 :style="getColor(item.examCode)">{{ item.address }}</h5>
+        <h5 :style="getColor(item.examCode)">{{ item.date }}</h5>
+        <h5 :style="getColor(item.examCode)">{{ item.startTime }} ~ {{ item.endTime }}</h5>
       </li>
     </ul>
 
@@ -44,7 +44,10 @@ export default {
       this.$emit("sendParent", examID);
     },
     getColor(examCode){
-      return store.state.codeColorMap.get(examCode)
+      const c=store.state.codeColorMap.get(examCode)
+      return {
+        background:c.bg,color:c.fo
+      }
     }
   }
 }
@@ -55,7 +58,6 @@ export default {
 .list-carpper {
   width: 95%;
   margin: 0 auto;
-  color: white;
 }
 
 .item {
@@ -79,7 +81,6 @@ export default {
   font-size: 14px;
   margin-left: 30px;
   padding-top: 2px;
-  color: white;
 }
 
 .arrange {

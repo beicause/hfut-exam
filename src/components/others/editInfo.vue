@@ -40,7 +40,8 @@
   </div>
 </template>
 
-<script>
+<script>import store from "../../store";
+
 
 export default {
   components: {},
@@ -64,6 +65,7 @@ export default {
     // 退出登录
     signOut(id) {
       localStorage.clear();
+      store.commit('updateListUnfinished',[])
       this.$router.push(`/myInfo`); // 页面跳转到含有判断功能的界面
     },
 

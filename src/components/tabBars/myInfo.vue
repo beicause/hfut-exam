@@ -210,7 +210,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 .button_sumbit {
   width: 100%;
   display: flex;

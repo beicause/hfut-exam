@@ -55,6 +55,7 @@ import {host} from "../../network";
 import axios from 'axios'
 import tabBar from "./tabBar";
 import store from '../../store';
+import { isLogin } from '../../common/utils';
 
 export default {
   name: "allInvigilationInfo",
@@ -63,7 +64,7 @@ export default {
     tabBar,
   },
   created(){
-    store.dispatch('getUnfinished')
+    if(isLogin())store.dispatch('getUnfinished')
   },
   data() {
     return {
@@ -137,7 +138,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 .is-top {
   margin-bottom: 0;
 }

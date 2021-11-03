@@ -30,7 +30,7 @@ import axios from 'axios'
 import {host} from '../../network'
 import {MessageBox} from 'mint-ui';
 import store from '../../store';
-
+import { isLogin } from '../../common/utils';
 export default {
   name: "changeSquare",
   components: {
@@ -41,7 +41,7 @@ export default {
     }
   },
   created(){
-    store.dispatch('getUnfinished')
+    if(isLogin())store.dispatch('getUnfinished')
   },
   computed: {
     list(){

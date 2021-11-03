@@ -5,18 +5,7 @@
 <script>
 
 export default {
-	name: 'App',
-	created() {
-		// 判断是否登录
-		if (!localStorage.token) {
-			this.$notify({
-				title: '',
-				message: '请先登录..',
-				type: 'warning'
-			});
-			this.$router.push({ path: '/myInfo' });
-		} 
-	}
+	name: 'App'
 }
 </script>
 
