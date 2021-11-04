@@ -1,4 +1,4 @@
-package edu.hfutsoft.androidproject
+package edu.hfutsoft.teacherexam
 
 import org.junit.Test
 
