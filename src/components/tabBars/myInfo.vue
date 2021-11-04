@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="after-login" v-if="isLogin">
-      <img class="backgr" src="../../assets/pic.jpg" alt="">
+      <img class="backgr" src="../../assets/pic.jpg" alt />
       <!-- 头像 -->
       <div class="img-bar">
-        <img class="ba" src="../../assets/QQ.png" alt="">
+        <img class="ba" src="../../assets/QQ.png" alt />
       </div>
       <div class="name">
         <span style="font-size: 22px;">{{ name }}</span>
@@ -68,9 +68,8 @@
       </div>
     </div>
 
-
     <div class="before-login" v-if="!isLogin">
-      <img src="../../assets/xiaohui.png" alt="">
+      <img src="../../assets/xiaohui.png" alt />
       <div class="intput">
         <el-input v-model="account" placeholder="工号或姓名">
           <i slot="prefix" class="el-input__icon el-icon-user"></i>
@@ -84,19 +83,18 @@
         <button class="submit" @click="submit()">登录</button>
       </div>
     </div>
-    <tabBar :num="num"></tabBar>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import Qs from 'qs';
-import {host} from '../../network.js'
+import { host } from '../../network.js'
 import store from '../../store/index.js';
 import tabBar from './tabBar.vue'
 
 export default {
-  components: {tabBar},
+  components: { tabBar },
   data() {
     return {
       isLogin: false,
@@ -111,13 +109,9 @@ export default {
     if (localStorage.token) {
       this.isLogin = true;
       this.name = localStorage.name;
+      store.dispatch('getUnfinished')
     } else {
       this.isLogin = false;
-    }
-  },
-  computed:{
-    num(){
-      return store.state.listUnfinished.length
     }
   },
   methods: {
@@ -135,7 +129,7 @@ export default {
       axios({
         url: host.ip + '/login',
         method: 'post',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'},
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
         data: {
           workId: this.account,
           password: this.password,
@@ -159,6 +153,7 @@ export default {
           this.getTeacherInfo();
           // 修改登录状态
           this.isLogin = true;
+          store.dispatch('getUnfinished')
         } else {
           this.$notify({
             title: '',
@@ -198,12 +193,12 @@ export default {
             });
           }
         }).catch(fail => {
-        this.$notify({
-          title: '',
-          message: '获取老师信息失败',
-          type: 'error'
-        });
-      })
+          this.$notify({
+            title: '',
+            message: '获取老师信息失败',
+            type: 'error'
+          });
+        })
     }
   }
 }
@@ -225,7 +220,7 @@ export default {
   border-radius: 20px;
   height: 35px;
   width: 240px;
-  background: linear-gradient(to left, #DF013A, #DF3A01); /* 标准的语法 */
+  background: linear-gradient(to left, #df013a, #df3a01); /* 标准的语法 */
 }
 
 .el-input__icon {
@@ -258,7 +253,7 @@ export default {
 
 .note-item i {
   font-size: 25px;
-  color: #58ACFA;
+  color: #58acfa;
 }
 
 .note-item span {

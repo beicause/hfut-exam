@@ -1,11 +1,21 @@
 <template>
-	<router-view />
+	<div>
+		<router-view />
+		<tabBar :num="num"></tabBar>
+	</div>
 </template>
 
 <script>
-
+import tabBar from './components/tabBars/tabBar.vue'
+import store from './store'
 export default {
-	name: 'App'
+	name: 'App',
+	components:{tabBar},
+	computed:{
+		num(){
+			return store.state.listUnfinished.length
+		}
+	}
 }
 </script>
 

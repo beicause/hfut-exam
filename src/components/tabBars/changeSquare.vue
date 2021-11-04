@@ -19,8 +19,6 @@
                    circle></el-button>
       </li>
     </ul>
-    <!-- 底部导航 -->
-    <tabBar :num="num"></tabBar>
   </div>
 </template>
 
@@ -46,9 +44,6 @@ export default {
   computed: {
     list(){
       return store.state.listUnfinished
-    },
-    num(){
-      return store.state.listUnfinished.length
     }
   },
   methods: {

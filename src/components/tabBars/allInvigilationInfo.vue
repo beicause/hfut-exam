@@ -43,9 +43,6 @@
         </ul>
       </div>
     </el-dialog>
-
-    <!-- 底部导航条 -->
-    <tabBar :num="num"></tabBar>
   </div>
 </template>
 
@@ -78,9 +75,6 @@ export default {
   computed:{
     courseList() {
       return store.state.listUnfinished
-    },
-    num(){
-      return store.state.listUnfinished.length
     }
   },
   methods: {
