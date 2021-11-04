@@ -22,32 +22,18 @@
       >
         退出登录
       </button>
-      <!--      <el-button type="danger">Danger</el-button>-->
     </div>
-<!--    <div>-->
-<!--      <button id="a1" style="-->
-<!--        background: #F56C6C;-->
-<!--        color: #FFFFF6;-->
-<!--        border-radius: 30px;-->
-<!--        width: 80%;-->
-<!--        height: 40px;-->
-<!--        margin: 10px 0 10px 0;-->
-<!--        "-->
-<!--      >-->
-<!--        你好-->
-<!--      </button>-->
-<!--    </div>-->
   </div>
 </template>
 
-<script>import store from "../../store";
-
+<script>
+import store from "../../store";
 
 export default {
   components: {},
   data() {
     return {
-      // isLogin: true,
+      isLogin: true,
     }
   },
   mounted() {

@@ -53,7 +53,7 @@
 import arrange from '../others/arrange.vue'
 import {host} from "../../network";
 import axios from 'axios'
-import tabBar from "./tabBar";
+import tabBar from "./tabBar.vue";
 import store from '../../store';
 import { isLogin } from '../../common/utils';
 
