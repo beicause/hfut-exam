@@ -2,11 +2,10 @@ import Vue from "vue"
 import Vuex from 'vuex'
 import axios from 'axios'
 import { host } from '../network'
-import { vm } from '../main'
+import vm from '../App.vue'
 import { Indicator } from 'mint-ui';
 
 Vue.use(Vuex)
-
 
 const store = new Vuex.Store({
     state: {

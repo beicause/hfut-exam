@@ -1,9 +1,9 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
+import App from './App.vue'
 import router from './router'
-
+import store from './store'
 Vue.config.productionTip = false
 
 import ElementUI from 'element-ui';
@@ -22,18 +22,15 @@ import '../static/mui/css/icons-extra.css';
 // Vue.use(ViewUI);
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
-import GoEasy from "goeasy";
 
 Vue.use(MintUI)
 
 /* eslint-disable no-new */
-const vm=new Vue({
-    ...App,
-    router
-})
-vm.$mount('#app')
-
-export { vm }
+new Vue({
+    router,
+    store,
+    render:h=>h(App)
+}).$mount('#app')
 
 // Vue.prototype.goeasy = GoEasy.getInstance({
 //   host:"hangzhou.goeasy.io",  //若是新加坡区域：singapore.goeasy.io
