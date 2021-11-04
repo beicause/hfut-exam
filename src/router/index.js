@@ -5,7 +5,7 @@ import allInvigilationInfo from '@/components/tabBars/allInvigilationInfo.vue'
 import changeSquare from '@/components/tabBars/changeSquare.vue'
 import myInfo from '@/components/tabBars/myInfo.vue'
 // lazy load
-const defaultPage = () => import('@/components/user/defaultPage.vue')
+// const defaultPage = () => import('@/components/user/defaultPage.vue')
 const register = () => import('@/components/user/register.vue')
 const login = () => import('@/components/user/login.vue')
 const changeRecord = () => import('@/components/others/changeRecord.vue')
