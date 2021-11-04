@@ -25,7 +25,10 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
-   # - run: npm ci
-    - run: pnpm run build --if-present
-   # - run: npm test
+        cache: 'npm'
+    - name: install pnpm
+    - run: npm install pnpm -g
+    - name: install denpendencies
+    - run: pnpm i
+    - name: run build
+    - run: pnpm build
