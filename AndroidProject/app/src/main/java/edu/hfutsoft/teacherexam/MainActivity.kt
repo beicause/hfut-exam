@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
   @SuppressLint("SetJavaScriptEnabled", "ShowToast")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    JPushInterface.setDebugMode(true)
+//    JPushInterface.setDebugMode(true)
     JPushInterface.init(this)
 
     toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)

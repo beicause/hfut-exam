@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import { Android } from './common/utils'
 import tabBar from './components/tabBars/tabBar.vue'
 import store from './store'
 export default {
@@ -16,10 +15,6 @@ export default {
 		num() {
 			return store.state.listUnfinished.length
 		}
-	},
-	created() {
-		console.log(''+localStorage.name);
-		Android.setAlias(''+localStorage.name)
 	}
 }
 </script>

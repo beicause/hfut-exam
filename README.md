@@ -15,6 +15,7 @@ pnpm run serve
 pnpm run build
 
 ```
+
 ## Android setup  
 
 `cd AndroidProject` with Android Studio

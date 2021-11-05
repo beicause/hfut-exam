@@ -1,4 +1,4 @@
-export function isLogin(){
+export function isLogin() {
     return !!localStorage.token
 }
-export const Android=window.Android ||{setAlias(s){}}
+export const Android = window.Android || { setAlias(s) { }, deleteAlias() { } }

@@ -69,7 +69,7 @@
     </div>
 
     <div class="before-login" v-if="!isLogin">
-      <img src="../../assets/xiaohui.png" alt />
+      <img src="../../assets/xiaohui.jpg" alt />
       <div class="intput">
         <el-input v-model="account" placeholder="工号或姓名">
           <i slot="prefix" class="el-input__icon el-icon-user"></i>
@@ -186,7 +186,9 @@ export default {
           if (res.data.code === 0) {
             this.name = res.data.data.name;
             localStorage.name = this.name;
+            
             Android.setAlias(this.name)
+            
           } else {
             this.$notify({
               title: '',

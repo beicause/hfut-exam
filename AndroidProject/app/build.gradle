@@ -27,7 +27,7 @@ android {
 
   buildTypes {
     release {
-      minifyEnabled false
+      minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
   }
@@ -41,6 +41,10 @@ android {
 }
 
 dependencies {
+  def work_version = "2.7.0"
+  // Kotlin + coroutines
+  implementation "androidx.work:work-runtime-ktx:$work_version"
+
   implementation 'cn.jiguang.sdk:jpush:4.4.0'  // 此处以JPush 4.4.0 版本为例。
   implementation 'cn.jiguang.sdk:jcore:3.0.0-release'  // 此处以JCore 3.0.0 版本为例。
 

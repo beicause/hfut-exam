@@ -53,12 +53,10 @@ export default {
     signOut(id) {
       localStorage.clear();
       store.commit('updateListUnfinished',[])
-      Android.setAlias(''+localStorage.name)
+      Android.deleteAlias()
+
       this.$router.push(`/myInfo`); // 页面跳转到含有判断功能的界面
     },
-
-
-
   }
 }
 
