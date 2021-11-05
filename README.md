@@ -1,8 +1,8 @@
-# 合工大监考信息系统
+# 合工大监考
 
 > 教师查看、管理监考信息
 
-## Build Setup
+## Web setup
 
 ``` bash
 # install dependencies
@@ -15,3 +15,6 @@ pnpm run serve
 pnpm run build
 
 ```
+## Android setup  
+
+`cd AndroidProject` with Android Studio
