@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity() {
   @SuppressLint("SetJavaScriptEnabled", "ShowToast")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-//    JPushInterface.setDebugMode(true)
-    JPushInterface.init(this)
 
     toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
     window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
