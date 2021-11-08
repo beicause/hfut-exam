@@ -7,12 +7,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.WindowManager
-import android.webkit.ConsoleMessage
-import android.webkit.WebChromeClient
-import android.webkit.WebView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import cn.jpush.android.api.JPushInterface
+import com.tencent.smtt.export.external.interfaces.ConsoleMessage
+import com.tencent.smtt.sdk.WebChromeClient
+import com.tencent.smtt.sdk.WebView
 import java.util.*
 
 class MainActivity : AppCompatActivity() {

@@ -34,3 +34,15 @@
 -keep class * extends cn.jpush.android.service.JPushMessageReceiver { *; }
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }
+
+# TBS
+-dontwarn dalvik.**
+-dontwarn com.tencent.smtt.**
+
+-keep class com.tencent.smtt.** {
+    *;
+}
+
+-keep class com.tencent.tbs.** {
+    *;
+}

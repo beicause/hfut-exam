@@ -47,6 +47,7 @@ dependencies {
 
   implementation 'cn.jiguang.sdk:jpush:4.4.0'  // 此处以JPush 4.4.0 版本为例。
   implementation 'cn.jiguang.sdk:jcore:3.0.0-release'  // 此处以JCore 3.0.0 版本为例。
+  api 'com.tencent.tbs:tbssdk:44085'
 
   implementation 'androidx.core:core-ktx:1.3.2'
   implementation 'androidx.appcompat:appcompat:1.2.0'
