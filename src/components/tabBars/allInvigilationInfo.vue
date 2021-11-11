@@ -1,17 +1,9 @@
 <template>
   <div>
     <!-- 头部 -->
-    <div class="mui-bar mui-bar-nav">
-      <h1 class="mui-title">我的监考</h1>
-    </div>
+      <div class="title">我的监考</div>
     <!-- 日期 与 安排-->
-    <el-tabs style="padding-top: 55px;" v-model="activeName" :stretch="true">
-      <el-tab-pane label="全部监考" name="allSchedule">
-
-        <arrange @sendParent="getCourseInfo" :list="courseList"></arrange>
-
-      </el-tab-pane>
-    </el-tabs>
+        <arrange @clickItem="getCourseInfo" :list="courseList"></arrange>
     <!-- 遮罩层 -->
     <el-dialog :visible.sync="mask" width="90%">
       <div class="demoTwo">
@@ -48,7 +40,7 @@
 
 <script>
 import arrange from '../others/arrange.vue'
-import {host} from "../../network";
+import {host} from "../../common/network";
 import axios from 'axios'
 import tabBar from "./tabBar.vue";
 import store from '../../store';
@@ -88,13 +80,13 @@ export default {
 
     // 子组件传值过来
     getCourseInfo(examCode) {
-      console.log(examCode);
+      
       axios.get(host.ip + '/teacher/exam', {
         headers: {
           'token': localStorage.token
         },
         params: {
-          examCode: examCode
+          examCode
         }
       }).then(suc => {
         if (suc.data.code === 0) {
@@ -226,17 +218,13 @@ h1 {
   margin: 5px 5px;
   color: #6E6E6E;
 }
-
-/* .mint-swipe .mint-swipe-item:nth-child(1) {
-  background-image: url('../../images/back1.png');
-  background-size: 375px 200px ;
+.title{
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  background: #A9E2F3;
+  text-align: center;
+  color:white;
 }
-.mint-swipe .mint-swipe-item:nth-child(2) {
-   background-image: url('../../images/back2.png');
-  background-size: 375px 200px ;
-}
-.mint-swipe .mint-swipe-item:nth-child(3) {
-   background-image: url('../../images/back3.png');
-  background-size: 375px 200px ;
-} */
 </style>

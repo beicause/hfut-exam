@@ -27,7 +27,7 @@
 
 <script>
 import axios from 'axios'
-import {host} from '../../network'
+import {host} from '../../common/network'
 import { MessageBox } from 'mint-ui';
 import { Indicator } from 'mint-ui';
 

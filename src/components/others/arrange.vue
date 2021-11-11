@@ -1,24 +1,47 @@
 <template>
-  <div class="arrange">
+  <div>
     <ul v-if="!isNull" class="list-carpper">
-      <li v-for="item in list" :key="item.examCode" :ID='item.examCode' @click="pop($event)"
-          class="item" :style="getColor(item.examCode)">
-        <h3 :style="getColor(item.examCode)">{{ item.name }}</h3>
-        <h5 :style="getColor(item.examCode)">{{ item.address }}</h5>
-        <h5 :style="getColor(item.examCode)">{{ item.date }}</h5>
-        <h5 :style="getColor(item.examCode)">{{ item.startTime }} ~ {{ item.endTime }}</h5>
+      <li
+        v-for="item in list"
+        :key="item.examCode"
+        @click="pop(item.examCode)"
+        class="item"
+        :style="getColor(item.examCode)"
+      >
+        <div>
+          <h3 :style="getColor(item.examCode)">
+            {{ item.name }}
+            <span
+              v-if="item.examStateEnum === 'TO_BE_REPLACED'"
+              style="color: #FA5858; font-size: 15px"
+            >（等待调换中）</span>
+          </h3>
+          <h5 :style="getColor(item.examCode)">{{ item.address }}</h5>
+          <h5 :style="getColor(item.examCode)">{{ item.date }}</h5>
+          <h5 :style="getColor(item.examCode)">{{ item.startTime }} ~ {{ item.endTime }}</h5>
+        </div>
+
+        <div
+          style="display:flex;align-items:center;margin-right:10px"
+          @click.stop="changeIt(item.invigilateCode)"
+        >
+          <el-button type="primary" icon="el-icon-edit" circle></el-button>
+        </div>
       </li>
     </ul>
 
     <div v-if="isNull">
       <el-empty description="暂时没有监考信息"></el-empty>
     </div>
-<!--  原计划分天展示,这里是特定的某一天中的没有信息  -->
+    <!--  原计划分天展示,这里是特定的某一天中的没有信息  -->
   </div>
 </template>
 
 <script>
-import store from "../../store";
+import store from "@/store"
+import { MessageBox } from 'mint-ui'
+
+import { startExchange } from '@/common/network'
 
 export default {
   props: {
@@ -30,24 +53,61 @@ export default {
   data() {
     return {
       data: {},
-      message: {list: null},
+      message: { list: null },
     }
   },
-  computed:{
-    isNull(){
-      return this.list.length===0
+  computed: {
+    isNull() {
+      return this.list.length === 0
     }
   },
   methods: {
     pop(e) {
-      let examID = e.currentTarget.getAttribute('ID');
-      this.$emit("sendParent", examID);
+      this.$emit("clickItem", e);
     },
-    getColor(examCode){
-      const c=store.state.codeColorMap.get(examCode)
+    getColor(examCode) {
+      const c = store.state.codeColorMap.get(examCode)
       return {
-        background:c.bg,color:c.fo
+        background: c.bg, color: c.fo
       }
+    },
+    changeIt(invigilateCode) {
+      let token = localStorage.token;
+      MessageBox.confirm('确认提出调换申请?').then(action => {
+        startExchange(token, invigilateCode).then(suc => {
+          if (suc.data.code === 0) {
+            this.$notify({
+              title: '',
+              message: '申请成功',
+              type: 'success'
+            });
+            // this.$router.replace('/myInfo/myApply');
+          } else if (suc.data.code === -1) {
+            this.$notify({
+              title: '',
+              message: '您已经发起了调度，请勿重复操作',
+              type: 'warning'
+            });
+          } else {
+            this.$notify({
+              title: '',
+              message: '出错了..',
+              type: 'error'
+            });
+          }
+          store.dispatch('getUnfinished')
+        })
+          .catch(fail => {
+            console.log(fail);
+            this.$notify({
+              title: '',
+              message: '出错了...',
+              type: 'error'
+            });
+          })
+      }).catch((e) => {
+        console.log(e);
+      })
     }
   }
 }
@@ -58,15 +118,16 @@ export default {
 .list-carpper {
   width: 95%;
   margin: 0 auto;
+  margin-top: 15px;
 }
 
 .item {
-  background: #A9E2F3;
+  background: #a9e2f3;
   width: 100%;
   height: 100px;
-  margin-top: 15px;
   border-radius: 14px;
-  border: 1px solid #eaeaea;
+  display: flex;
+  justify-content: space-between;
   box-shadow: 0 0 25px #cac6c6;
 }
 
@@ -81,16 +142,5 @@ export default {
   font-size: 14px;
   margin-left: 30px;
   padding-top: 2px;
-}
-
-.arrange {
-  width: 95%;
-  margin: 10px auto;
-  height: 570px;
-  /*background: red;*/
-  border-radius: 10px;
-  background: #fff;
-  border: 1px solid #eaeaea;
-  box-shadow: 0 0 25px #cac6c6;
 }
 </style>

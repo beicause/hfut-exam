@@ -90,7 +90,7 @@
 import axios from 'axios';
 import Qs from 'qs';
 import { Android } from '../../common/utils.js';
-import { host } from '../../network.js'
+import { host, getTeacherInfo } from '../../common/network.js'
 import store from '../../store/index.js';
 import tabBar from './tabBar.vue'
 
@@ -151,7 +151,7 @@ export default {
           // localStorage.clear();
           localStorage.token = suc.data.data.token;
           // 获取老师的信息
-          this.getTeacherInfo();
+          this._getTeacherInfo();
           // 修改登录状态
           this.isLogin = true;
           store.dispatch('getUnfinished')
@@ -171,30 +171,21 @@ export default {
       })
     },
 
-    //
-    getTeacherInfo() {
+    _getTeacherInfo() {
       let token = localStorage.token;
-      axios.get(host.ip + "/teacher/info", {
-        headers: {
-          // 'Authorization': 'JWT ' + token
-          // authorization: `Bearer ${token}`,
-          'token': token
-        },
-        responseType: 'json',
-      })
-        .then(res => {
+      getTeacherInfo(token).then(res => {
           if (res.data.code === 0) {
-            this.name = res.data.data.name;
-            localStorage.name = this.name;
-            
+            this.name = res.data.data.name
+            localStorage.name = this.name
+
             Android.setAlias(this.name)
-            
+
           } else {
             this.$notify({
               title: '',
               message: '获取教师信息失败',
               type: 'error'
-            });
+            })
           }
         }).catch(fail => {
           this.$notify({

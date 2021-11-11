@@ -6,7 +6,7 @@
     "private": true,
     "scripts": {
         "serve": "vite",
-        "build":"vite build && node scripts/buildAndroid.js"
+        "build":"vite build"
     },
     "dependencies": {
         "axios": "^0.21.4",

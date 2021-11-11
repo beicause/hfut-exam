@@ -14,7 +14,7 @@
 
 <script>
 import axios from 'axios'
-import {host} from '../../network'
+import {host} from '../../common/network'
 import arrange from './arrange.vue'
 import allArrange from './allArrange.vue'
 

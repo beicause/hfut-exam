@@ -5,7 +5,7 @@
       <span>调换信息</span>
     </div>
     <!-- 所有监考信息的列表 -->
-    <ul class="course_list">
+    <ul>
       <li v-for="item in list" :key="item.examCode" class="course_list_item">
         <div>
           <h3>{{ item.name }} <span v-if="item.examStateEnum === 'TO_BE_REPLACED'"
@@ -25,7 +25,7 @@
 <script>
 import tabBar from './tabBar.vue'
 import axios from 'axios'
-import {host} from '../../network'
+import {host} from '../../common/network'
 import {MessageBox} from 'mint-ui';
 import store from '../../store';
 import { isLogin } from '../../common/utils';
@@ -57,7 +57,7 @@ export default {
             'token': token
           },
           params: {
-            'invigilateCode': invigilateCode,
+            invigilateCode,
             'msg': ' ',
           },
           responseType: 'json',
@@ -94,7 +94,7 @@ export default {
             });
           })
       }).catch((e)=>{
-        
+        console.log(e);
       })
     },
     // 获取所有的 监考
@@ -142,10 +142,6 @@ export default {
   height: 50px;
   margin-top: 25px;
   margin-right: 15px;
-}
-
-.course_list {
-  margin-top: 40px;
 }
 
 .course_list_item {

@@ -1,7 +1,6 @@
 import Vue from "vue"
 import Vuex from 'vuex'
-import axios from 'axios'
-import { host } from '../network'
+import { getUnfinished as _getUnfinished } from '../common/network'
 import vm from '../App.vue'
 import { Indicator } from 'mint-ui';
 
@@ -9,13 +8,19 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-        // examCode => { bg: string,fo: string }
+        // 考试和颜色的映射图 Map: examCode => { bg: string,fo: string }
         codeColorMap: new Map(),
-        listUnfinished: []
+        listUnfinished: [],
+        _colorIndex: 0
     },
     mutations: {
         updateListUnfinished(state, list) {
             state.listUnfinished = list
+        },
+        // 为考试设置颜色
+        setColorMap(state, examCode) {
+            state.codeColorMap.set(examCode, colors[state._colorIndex % colors.length])
+            state._colorIndex++
         }
     },
     actions: {
@@ -23,30 +28,25 @@ const store = new Vuex.Store({
             let token = localStorage.token;
             Indicator.open()
             // 没有完成的监考
-            axios.get(host.ip + "/teacher/unfinished", {
-                headers: {
-                    'token': token
-                },
-                responseType: 'json',
+            _getUnfinished(token).then(suc => {
+                if (suc.data.code === 0) {
+                    const list = suc.data.data;
+                    console.log('get', list);
+                    context.commit('updateListUnfinished', list)
+                    // 没有颜色则配置颜色
+                    list.forEach((item) => {
+                        if (!context.state.codeColorMap.has(item.examCode))
+                            context.commit('setColorMap', item.examCode)
+                    });
+                } else {
+                    vm.$notify({
+                        title: '',
+                        message: suc.data.msg,
+                        type: 'error'
+                    });
+                }
+                Indicator.close()
             })
-                .then(suc => {
-                    if (suc.data.code === 0) {
-                        const list = suc.data.data;
-                        console.log('get', list);
-                        context.commit('updateListUnfinished', list)
-                        localStorage.num = list.length;
-                        list.forEach((item, index) => {
-                            context.state.codeColorMap.set(item.examCode, colors[index % colors.length])
-                        });
-                    } else {
-                        this.$notify({
-                            title: '',
-                            message: suc.data.msg,
-                            type: 'error'
-                        });
-                    }
-                    Indicator.close()
-                })
                 .catch(fail => {
                     console.log(fail);
                     vm.$notify({

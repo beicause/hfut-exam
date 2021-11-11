@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     findViewById<WebView>(R.id.wv).apply {
       settings.javaScriptEnabled = true
       settings.domStorageEnabled = true
+      /** @see android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW*/
+      settings.mixedContentMode=0
       webChromeClient = object : WebChromeClient() {
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
           consoleMessage?.apply {
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         }
       }
       addJavascriptInterface(JavaScriptInterface(this@MainActivity), "Android")
-      loadUrl("file:///android_asset/dist/index.html")
+      loadUrl("https://qingcheng.asia/hfutexam/")
     }
   }
 
