@@ -34,7 +34,7 @@
       <el-empty description="暂时没有监考信息"></el-empty>
     </div>
       
-    <exam-change-dialog ref="dialog" :examCode="clickedExamCode"></exam-change-dialog>
+    <exam-change-dialog ref="dialog" :invigilateCode="clickedInvigilateCode"></exam-change-dialog>
   </div>
 </template>
 
@@ -60,7 +60,7 @@ export default {
   },
   data() {
     return {
-      clickedExamCode: '',
+      clickedInvigilateCode: '',
     }
   },
   methods: {
@@ -75,7 +75,7 @@ export default {
       }
     },
     changeIt(invigilateCode) {
-      this.clickedExamCode = invigilateCode
+      this.clickedInvigilateCode = invigilateCode
       this.$refs.dialog.open()
       // const token = localStorage.token;
       // const msg = '接受该调换申请吗?'

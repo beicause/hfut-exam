@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import cn.jpush.android.api.JPushInterface
 import com.tencent.smtt.export.external.interfaces.ConsoleMessage
 import com.tencent.smtt.sdk.WebChromeClient
+import com.tencent.smtt.sdk.WebSettings
 import com.tencent.smtt.sdk.WebView
 import java.util.*
 
@@ -37,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     findViewById<WebView>(R.id.wv).apply {
       settings.javaScriptEnabled = true
       settings.domStorageEnabled = true
+//      设置缓存可以加载更快，但还需要有缓存更新的策略，我先不设置
+//      settings.cacheMode=WebSettings.LOAD_CACHE_ELSE_NETWORK
       /** @see android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW*/
       settings.mixedContentMode=0
       webChromeClient = object : WebChromeClient() {

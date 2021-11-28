@@ -72,10 +72,20 @@ export async function getOthersInvigilate(token) {
 }
 
 export async function exchange(token, otherExam, myExams = []) {
-    if (myExams.length===0) return await axios.get(host.ip + '/exchange/replace', {
+    if (myExams.length === 0) return await axios.get(host.ip + '/exchange/replace', {
         headers: { token }, params: { invigilateCode: otherExam }
     })
     return await axios.get(host.ip + '/exchange/intent', {
-        headers: { token }, params: { invigilateCodes: myExams, targetCode: otherExam }
+        headers: { token }, params: { invigilateCodes: encodeURIComponent(myExams), targetCode: otherExam }
+    })
+}
+
+export async function getToConfirmed(invigilateCode) {
+    return await axios.get(host.ip + '/teacher/list-intend', { params: { invigilateCode } })
+}
+
+export async function confirmExchange(token, exchangeCode) {
+    return axios.get(host.ip + '/exchange/confirm', {
+        headers: { token }, params: { exchangeCode }
     })
 }

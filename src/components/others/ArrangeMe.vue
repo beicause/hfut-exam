@@ -4,7 +4,7 @@
       <li
         v-for="item in list"
         :key="item.examCode"
-        @click="pop(item.examCode)"
+        @click="pop(item)"
         class="item"
         :style="getColor(item.examCode)"
       >
@@ -12,9 +12,9 @@
           <h3 :style="getColor(item.examCode)">
             {{ item.name }}
             <span
-              v-if="isToBeReplaced(item.examStateEnum)"
+              v-if="isNotUnfinished(item.examStateEnum)"
               style="color: #FA5858; font-size: 15px"
-            >（等待调换中）</span>
+            >{{isToBeConfirmed(item.examStateEnum)?'（有人请求，点击确认）': '（等待调换中）'}}</span>
           </h3>
           <h5 :style="getColor(item.examCode)">{{ item.address }}</h5>
           <h5 :style="getColor(item.examCode)">{{ item.date }}</h5>
@@ -26,13 +26,13 @@
           @click.stop="changeIt(item.invigilateCode, item.examStateEnum)"
         >
           <el-button
-            :style="isToBeReplaced(item.examStateEnum) ? { 'border-color': '#fa5858', 'background-color': '#fa5858' } : {}"
+            :style="isNotUnfinished(item.examStateEnum) ? { 'border-color': '#fa5858', 'background-color': '#fa5858' } : {}"
             type="primary"
             circle
           >
             <icon
               style="width: 24px;height: 24px;"
-              :icon="isToBeReplaced(item.examStateEnum) ? 'bpmn:end-event-cancel' : 'tabler:exchange'"
+              :icon="isNotUnfinished(item.examStateEnum) ? 'bpmn:end-event-cancel' : 'tabler:exchange'"
             ></icon>
           </el-button>
         </div>
@@ -43,6 +43,7 @@
       <el-empty description="暂时没有监考信息"></el-empty>
     </div>
     <exam-info-mask ref="dialog" :examCode="clickedExamCode"></exam-info-mask>
+    <exam-confirm-dialog ref="confirm_dialog" :invigilateCode="clickedInvigilateCode"></exam-confirm-dialog>
   </div>
 </template>
 
@@ -53,9 +54,10 @@ import { Icon } from "@iconify/vue2"
 import { startExchange } from '@/common/network'
 import { cancelExchange } from "../../common/network"
 import ExamInfoMask from "./ExamInfoDialog.vue"
+import ExamConfirmDialog from "./ExamConfirmDialog.vue"
 
 export default {
-  components: { Icon, ExamInfoMask },
+  components: { Icon, ExamInfoMask, ExamConfirmDialog },
   props: {
     list: {
       type: Array,
@@ -64,7 +66,8 @@ export default {
   },
   data() {
     return {
-      clickedExamCode: ''
+      clickedExamCode: '',
+      clickedInvigilateCode:''
     }
   },
   computed: {
@@ -73,9 +76,11 @@ export default {
     }
   },
   methods: {
-    pop(e) {
-      this.clickedExamCode = e
-      this.$refs.dialog.open()
+    pop(item) {
+      this.clickedExamCode = item.examCode
+      this.clickedInvigilateCode=item.invigilateCode
+      if(this.isToBeConfirmed(item.examStateEnum))this.$refs.confirm_dialog.open()
+      else this.$refs.dialog.open()
     },
     getColor(examCode) {
       const c = store.state.codeColorMap.get(examCode)
@@ -83,15 +88,18 @@ export default {
         background: c.bg, color: c.fo
       }
     },
-    isToBeReplaced(state) {
-      return state === 'TO_BE_REPLACED'
+    isNotUnfinished(state) {
+      return state !== 'UNFINISHED'
+    },
+    isToBeConfirmed(state){
+      return state ==='TO_BE_CONFIRMED'
     },
     changeIt(invigilateCode, examStateEnum) {
       const token = localStorage.token;
-      const msg = this.isToBeReplaced(examStateEnum) ? '确认撤销请求吗？' : '确认提出调换申请吗?'
+      const msg = this.isNotUnfinished(examStateEnum) ? '确认撤销请求吗？' : '确认提出调换申请吗?'
       MessageBox.confirm(msg).then(action => {
         (
-          this.isToBeReplaced(examStateEnum)
+          this.isNotUnfinished(examStateEnum)
             ? cancelExchange(token, invigilateCode) : startExchange(token, invigilateCode)
         ).then(suc => {
           if (suc.data.code !== 0) throw Error()

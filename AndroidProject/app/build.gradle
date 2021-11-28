@@ -7,7 +7,7 @@ plugins {
 android {
   signingConfigs {
     release {
-      storeFile file('/home/luo/WebstromProjects/hfut-exam/hfut_exam.jks')
+      storeFile file('/home/luo/WebstromProjects/hfut-invigilate/hfut_exam.jks')
       storePassword '123456'
       keyAlias 'key0'
       keyPassword '123456'

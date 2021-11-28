@@ -4,8 +4,9 @@ import { computed, ref } from '@vue/composition-api';
 import store from '../../store';
 
 const props = defineProps({
-    examCode: { type: String, required: true }
+    invigilateCode: { type: String, required: true }
 })
+
 const list = computed(() => store.state.listMyInvigilate)
 const checkedList = ref([])
 const show = ref(false)
@@ -17,14 +18,16 @@ defineExpose({ open })
 <template>
     <div>
         <el-dialog title="调换考试" center :visible.sync="show" width="90%">
-            <div class="-mt-4">请选择您想换给他的考试：</div>
-            <div class="min-h-24 flex justify-center items-center">
+            <div class="-mt-4">请选择您想换给他的考试以发起请求</div>
+            <div>若不选择则直接获取该考试</div>
+            <div>您的考试有：</div>
+            <div class="min-h-24 flex justify-center">
                 <el-checkbox-group v-model="checkedList">
                     <el-checkbox-button
                         class="mt-2"
-                        :key="item.examCode"
+                        :key="item.invigilateCode"
                         v-for="item in list"
-                        :label="item.examCode"
+                        :label="item.invigilateCode"
                     >{{ item.name + '/' + item.address + '/' + item.date }}</el-checkbox-button>
                 </el-checkbox-group>
             </div>
@@ -41,12 +44,13 @@ export default {
     methods: {
         confirm() {
             console.log(this.checkedList);
-            exchange(localStorage.token, this.examCode, this.checkedList).then(res => {
+            exchange(localStorage.token, this.invigilateCode, this.checkedList).then(res => {
                 if (res.data.code === 0) {
                     this.$notify({
-                        title: '', message: '调换成功', type: 'success'
+                        title: '', message: '请求成功', type: 'success'
                     })
                 }
+                else throw Error(res.data.msg)
             }).catch(e => {
                 console.log(e);
                 this.$notify({
