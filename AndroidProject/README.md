@@ -1,1 +1,1 @@
-这是独立的Android项目，其中的assets目录由网页打包注入
+这是独立的Android项目

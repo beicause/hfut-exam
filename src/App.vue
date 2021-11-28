@@ -13,7 +13,7 @@ export default {
 	components: { tabBar },
 	computed: {
 		num() {
-			return store.state.listUnfinished.length
+			return store.state.listMyInvigilate.length
 		}
 	}
 }
@@ -33,4 +33,5 @@ export default {
 .v-leave-active {
 	transition: all 0.3s ease;
 }
+
 </style>

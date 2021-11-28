@@ -4,15 +4,15 @@
             <span class="mui-icon el-icon-date">
                 <span class="mui-badge">{{ num }}</span>
             </span>
-            <span class="mui-tab-label">监考日程</span>
+            <span class="mui-tab-label">我的监考</span>
         </router-link>
         <router-link class="mui-tab-item" to="/changeSquare">
             <span class="mui-icon el-icon-refresh"></span>
-            <span class="mui-tab-label">监考调换</span>
+            <span class="mui-tab-label">调换广场</span>
         </router-link>
         <router-link class="mui-tab-item" to="/myInfo">
             <span class="mui-icon el-icon-user"></span>
-            <span class="mui-tab-label">我的</span>
+            <span class="mui-tab-label">个人信息</span>
         </router-link>
     </nav>
 </template>

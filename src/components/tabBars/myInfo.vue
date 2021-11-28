@@ -13,58 +13,17 @@
       <!-- 调课安排，修改信息等 -->
       <div class="note">
         <ul class="note1">
-          <li class="note-item">
-            <router-link to="/myInfo/changeRecord">
-              <i class="el-icon-sort"></i>
-              <span>调换记录</span>
-            </router-link>
+          <li class="note-item blue" @click="$router.push('/me/changePassword')">
+            <icon icon="ri:lock-password-line" class="icon-size"></icon>
+            <span>修改密码</span>
           </li>
-          <li class="note-item">
-            <router-link to="/myInfo/allRecord">
-              <i class="el-icon-document-checked"></i>
-              <span>监考记录</span>
-            </router-link>
-          </li>
-          <li class="note-item">
-            <router-link to="/myInfo/alert">
-              <i class="el-icon-warning-outline"></i>
-              <span>待确认调换</span>
-            </router-link>
-          </li>
-          <li class="note-item">
-            <router-link to="/myInfo/editInfo">
-              <i class="el-icon-setting"></i>
-              <span>设置</span>
-            </router-link>
+          <li class="note-item blue" @click="_logout">
+            <icon icon="carbon:logout" class="icon-size"></icon>
+            <span>退出登录</span>
           </li>
         </ul>
 
-        <ul class="note1">
-          <li class="note-item">
-            <router-link to="/myInfo/myApply">
-              <i class="el-icon-upload2"></i>
-              <span>我的申请</span>
-            </router-link>
-          </li>
-          <li class="note-item">
-            <router-link to="/myInfo/othersApply">
-              <i class="el-icon-phone-outline"></i>
-              <span>他人的申请</span>
-            </router-link>
-          </li>
-          <li class="note-item">
-            <router-link to="/myInfo/wantToChange">
-              <i class="el-icon-finished"></i>
-              <span>欲调换</span>
-            </router-link>
-          </li>
-          <li class="note-item">
-            <router-link to="/myInfo">
-              <i class="el-icon-more-outline"></i>
-              <span>反馈</span>
-            </router-link>
-          </li>
-        </ul>
+        <ul class="note1"></ul>
       </div>
     </div>
 
@@ -90,12 +49,14 @@
 import axios from 'axios';
 import Qs from 'qs';
 import { Android } from '../../common/utils.js';
-import { host, getTeacherInfo } from '../../common/network.js'
+import { host, getTeacherInfo, logout } from '../../common/network.js'
 import store from '../../store/index.js';
 import tabBar from './tabBar.vue'
+import { Icon } from '@iconify/vue2'
+import { MessageBox } from 'mint-ui';
 
 export default {
-  components: { tabBar },
+  components: { tabBar, Icon },
   data() {
     return {
       isLogin: false,
@@ -110,7 +71,7 @@ export default {
     if (localStorage.token) {
       this.isLogin = true;
       this.name = localStorage.name;
-      store.dispatch('getUnfinished')
+      store.dispatch('getMyInvigilate')
     } else {
       this.isLogin = false;
     }
@@ -154,7 +115,7 @@ export default {
           this._getTeacherInfo();
           // 修改登录状态
           this.isLogin = true;
-          store.dispatch('getUnfinished')
+          store.dispatch('getMyInvigilate')
         } else {
           this.$notify({
             title: '',
@@ -174,26 +135,36 @@ export default {
     _getTeacherInfo() {
       let token = localStorage.token;
       getTeacherInfo(token).then(res => {
-          if (res.data.code === 0) {
-            this.name = res.data.data.name
-            localStorage.name = this.name
+        if (res.data.code === 0) {
+          this.name = res.data.data.name
+          localStorage.name = this.name
 
-            Android.setAlias(this.name)
+          Android.setAlias(this.name)
 
-          } else {
-            this.$notify({
-              title: '',
-              message: '获取教师信息失败',
-              type: 'error'
-            })
-          }
-        }).catch(fail => {
+        } else {
           this.$notify({
             title: '',
-            message: '获取老师信息失败',
+            message: '获取教师信息失败',
             type: 'error'
-          });
+          })
+        }
+      }).catch(fail => {
+        this.$notify({
+          title: '',
+          message: '获取老师信息失败',
+          type: 'error'
+        });
+      })
+    },
+    _logout() {
+      MessageBox.confirm('确定退出登录吗？').then(action => {
+        logout()
+        this.$notify({
+          message: '退出成功',
+          type: 'success'
         })
+        this.isLogin = false
+      }).catch(e=>{})
     }
   }
 }
@@ -313,4 +284,8 @@ export default {
   width: 80px;
   height: 80px;
 }
+.blue {
+  color: #58acfa;
+}
+
 </style>

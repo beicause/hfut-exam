@@ -45,7 +45,7 @@
 <script>
 import axios from 'axios'
 import {host} from '../../common/network'
-import arrange from './arrange.vue'
+import arrange from './ArrangeMe.vue'
 import allArrange from './allArrange.vue'
 
 export default {

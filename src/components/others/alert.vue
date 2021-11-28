@@ -28,9 +28,7 @@
 
 <script>
 import axios from 'axios'
-import Qs from 'qs'
 import {host} from '../../common/network'
-import {MessageBox} from 'mint-ui';
 import {Indicator} from 'mint-ui';
 
 export default {

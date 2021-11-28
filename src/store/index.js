@@ -1,6 +1,6 @@
 import Vue from "vue"
 import Vuex from 'vuex'
-import { getUnfinished as _getUnfinished } from '../common/network'
+import { getMyInvigilate as _getMyInvigilate, getOthersInvigilate as _getOthersInvigilate } from '../common/network'
 import vm from '../App.vue'
 import { Indicator } from 'mint-ui';
 
@@ -10,12 +10,16 @@ const store = new Vuex.Store({
     state: {
         // 考试和颜色的映射图 Map: examCode => { bg: string,fo: string }
         codeColorMap: new Map(),
-        listUnfinished: [],
+        listMyInvigilate: [],
+        listOthersInvigilate: [],
         _colorIndex: 0
     },
     mutations: {
-        updateListUnfinished(state, list) {
-            state.listUnfinished = list
+        updateListMyInvigilate(state, list) {
+            state.listMyInvigilate = list
+        },
+        updateListOthersInvigilate(state, list) {
+            state.listOthersInvigilate = list
         },
         // 为考试设置颜色
         setColorMap(state, examCode) {
@@ -24,15 +28,14 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        getUnfinished(context) {
+        getMyInvigilate(context) {
             let token = localStorage.token;
             Indicator.open()
-            // 没有完成的监考
-            _getUnfinished(token).then(suc => {
+            // 我的的监考
+            _getMyInvigilate(token).then(suc => {
                 if (suc.data.code === 0) {
                     const list = suc.data.data;
-                    console.log('get', list);
-                    context.commit('updateListUnfinished', list)
+                    context.commit('updateListMyInvigilate', list)
                     // 没有颜色则配置颜色
                     list.forEach((item) => {
                         if (!context.state.codeColorMap.has(item.examCode))
@@ -45,7 +48,6 @@ const store = new Vuex.Store({
                         type: 'error'
                     });
                 }
-                Indicator.close()
             })
                 .catch(fail => {
                     console.log(fail);
@@ -54,6 +56,41 @@ const store = new Vuex.Store({
                         message: '出错了..',
                         type: 'error'
                     });
+                }).finally(() => {
+                    Indicator.close()
+                })
+        },
+        getOthersInvigilate(context) {
+            let token = localStorage.token;
+            Indicator.open()
+            // 我的的监考
+            _getOthersInvigilate(token).then(suc => {
+                if (suc.data.code === 0) {
+                    const list = suc.data.data;
+                    context.commit('updateListOthersInvigilate', list)
+                    // 没有颜色则配置颜色
+                    list.forEach((item) => {
+                        if (!context.state.codeColorMap.has(item.invigilateCode))
+                            context.commit('setColorMap', item.invigilateCode)
+                    });
+                } else {
+                    vm.$notify({
+                        title: '',
+                        message: suc.data.msg,
+                        type: 'error'
+                    });
+                }
+            })
+                .catch(fail => {
+                    console.log(fail);
+                    vm.$notify({
+                        title: '',
+                        message: '出错了..',
+                        type: 'error'
+                    });
+                })
+                .finally(() => {
+                    Indicator.close()
                 })
         }
     }

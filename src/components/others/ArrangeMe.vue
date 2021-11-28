@@ -12,7 +12,7 @@
           <h3 :style="getColor(item.examCode)">
             {{ item.name }}
             <span
-              v-if="item.examStateEnum === 'TO_BE_REPLACED'"
+              v-if="isToBeReplaced(item.examStateEnum)"
               style="color: #FA5858; font-size: 15px"
             >（等待调换中）</span>
           </h3>
@@ -23,9 +23,18 @@
 
         <div
           style="display:flex;align-items:center;margin-right:10px"
-          @click.stop="changeIt(item.invigilateCode)"
+          @click.stop="changeIt(item.invigilateCode, item.examStateEnum)"
         >
-          <el-button type="primary" icon="el-icon-edit" circle></el-button>
+          <el-button
+            :style="isToBeReplaced(item.examStateEnum) ? { 'border-color': '#fa5858', 'background-color': '#fa5858' } : {}"
+            type="primary"
+            circle
+          >
+            <icon
+              style="width: 24px;height: 24px;"
+              :icon="isToBeReplaced(item.examStateEnum) ? 'bpmn:end-event-cancel' : 'tabler:exchange'"
+            ></icon>
+          </el-button>
         </div>
       </li>
     </ul>
@@ -33,27 +42,29 @@
     <div v-if="isNull">
       <el-empty description="暂时没有监考信息"></el-empty>
     </div>
-    <!--  原计划分天展示,这里是特定的某一天中的没有信息  -->
+    <exam-info-mask ref="dialog" :examCode="clickedExamCode"></exam-info-mask>
   </div>
 </template>
 
 <script>
 import store from "@/store"
 import { MessageBox } from 'mint-ui'
-
+import { Icon } from "@iconify/vue2"
 import { startExchange } from '@/common/network'
+import { cancelExchange } from "../../common/network"
+import ExamInfoMask from "./ExamInfoDialog.vue"
 
 export default {
+  components: { Icon, ExamInfoMask },
   props: {
     list: {
       type: Array,
       default: []
     }
-  }, // 父组件传递给子组件的数据
+  },
   data() {
     return {
-      data: {},
-      message: { list: null },
+      clickedExamCode: ''
     }
   },
   computed: {
@@ -63,7 +74,8 @@ export default {
   },
   methods: {
     pop(e) {
-      this.$emit("clickItem", e);
+      this.clickedExamCode = e
+      this.$refs.dialog.open()
     },
     getColor(examCode) {
       const c = store.state.codeColorMap.get(examCode)
@@ -71,31 +83,24 @@ export default {
         background: c.bg, color: c.fo
       }
     },
-    changeIt(invigilateCode) {
-      let token = localStorage.token;
-      MessageBox.confirm('确认提出调换申请?').then(action => {
-        startExchange(token, invigilateCode).then(suc => {
-          if (suc.data.code === 0) {
-            this.$notify({
-              title: '',
-              message: '申请成功',
-              type: 'success'
-            });
-            // this.$router.replace('/myInfo/myApply');
-          } else if (suc.data.code === -1) {
-            this.$notify({
-              title: '',
-              message: '您已经发起了调度，请勿重复操作',
-              type: 'warning'
-            });
-          } else {
-            this.$notify({
-              title: '',
-              message: '出错了..',
-              type: 'error'
-            });
-          }
-          store.dispatch('getUnfinished')
+    isToBeReplaced(state) {
+      return state === 'TO_BE_REPLACED'
+    },
+    changeIt(invigilateCode, examStateEnum) {
+      const token = localStorage.token;
+      const msg = this.isToBeReplaced(examStateEnum) ? '确认撤销请求吗？' : '确认提出调换申请吗?'
+      MessageBox.confirm(msg).then(action => {
+        (
+          this.isToBeReplaced(examStateEnum)
+            ? cancelExchange(token, invigilateCode) : startExchange(token, invigilateCode)
+        ).then(suc => {
+          if (suc.data.code !== 0) throw Error()
+          this.$notify({
+            title: '',
+            message: '操作成功',
+            type: 'success'
+          })
+          store.dispatch('getMyInvigilate')
         })
           .catch(fail => {
             console.log(fail);
@@ -132,15 +137,16 @@ export default {
 }
 
 .item h3 {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: bold;
   margin-left: 20px;
-  padding-top: 5px;
+  padding-top: 10px;
+  padding-bottom: 4px;
 }
 
-.item h5 {
-  font-size: 14px;
+h5 {
+  font-size: 16px;
   margin-left: 30px;
-  padding-top: 2px;
+  padding-top: 4px;
 }
 </style>

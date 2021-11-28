@@ -28,7 +28,7 @@
 <script>
 import axios from 'axios'
 import Qs from 'qs'
-import {host} from '../../common/network'
+import {cancelExchange, host} from '../../common/network'
 import {MessageBox} from 'mint-ui';
 import {Indicator} from 'mint-ui';
 
@@ -47,15 +47,7 @@ export default {
     changeIt(invigilateCode) {
       let token = localStorage.token;
       MessageBox.confirm('取消申请?').then(action => {
-        axios.get(host.ip + "/exchange/cancel", {
-          headers: {
-            'token': token
-          },
-          params: {
-            'invigilateCode': invigilateCode,
-          },
-          responseType: 'json',
-        })
+        cancelExchange()
           .then(suc => {
             if (suc.data.code === 0) {
               this.$notify({

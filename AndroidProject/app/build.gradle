@@ -1,15 +1,24 @@
 plugins {
   id 'com.android.application'
   id 'kotlin-android'
+  id 'com.huawei.agconnect'
 }
 
 android {
+  signingConfigs {
+    release {
+      storeFile file('/home/luo/WebstromProjects/hfut-exam/hfut_exam.jks')
+      storePassword '123456'
+      keyAlias 'key0'
+      keyPassword '123456'
+    }
+  }
   compileSdk 31
 
   defaultConfig {
     applicationId "edu.hfutsoft.teacherexam"
     minSdk 24
-    targetSdk 31
+    targetSdk 30
     versionCode 1
     versionName "1.0"
     ndk {
@@ -29,6 +38,11 @@ android {
     release {
       minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+      signingConfig signingConfigs.release
+    }
+    debug{
+      minifyEnabled false
+      signingConfig signingConfigs.release
     }
   }
   compileOptions {
@@ -45,9 +59,12 @@ dependencies {
   // Kotlin + coroutines
   implementation "androidx.work:work-runtime-ktx:$work_version"
 
+  implementation 'com.huawei.hms:push:5.3.0.301'
   implementation 'cn.jiguang.sdk:jpush:4.4.0'  // 此处以JPush 4.4.0 版本为例。
   implementation 'cn.jiguang.sdk:jcore:3.0.0-release'  // 此处以JCore 3.0.0 版本为例。
   api 'com.tencent.tbs:tbssdk:44085'
+  //引入极光-华为插件，如果采用此配置，无需拷贝jpush-android-plugin-huawei-v4.x.x.jar文件，也无需配置cn.jpush.android.service.PluginHuaweiPlatformsService组件
+  implementation 'cn.jiguang.sdk.plugin:huawei:4.1.5'
 
   implementation 'androidx.core:core-ktx:1.3.2'
   implementation 'androidx.appcompat:appcompat:1.2.0'

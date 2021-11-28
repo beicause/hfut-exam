@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import './common/style.css'
 Vue.config.productionTip = false
 
 import ElementUI from 'element-ui';
@@ -13,16 +14,11 @@ Vue.use(ElementUI);
 // mui的原生框架
 import '../static/reset.css';
 import '../static/mui/css/mui.min.css';
-import '../static/mui/css/icons-extra.css';
-// import '../static/mui/js/mui.min.js';
-// import '../static/mui/css/app.css';
-
-// import ViewUI from 'view-design';
-// import 'view-design/dist/styles/iview.css';
-// Vue.use(ViewUI);
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
-
+import 'virtual:windi.css'
+import Composition from '@vue/composition-api'
+Vue.use(Composition)
 Vue.use(MintUI)
 
 /* eslint-disable no-new */
@@ -31,10 +27,3 @@ new Vue({
     store,
     render:h=>h(App)
 }).$mount('#app')
-
-// Vue.prototype.goeasy = GoEasy.getInstance({
-//   host:"hangzhou.goeasy.io",  //若是新加坡区域：singapore.goeasy.io
-//   appkey:"您的common key",
-//   modules:['pubsub'],//根据需要，传入‘pubsub’或'im’，或数组方式同时传入
-//   allowNotification:true,  // true表示支持通知栏提醒，false则表示不需要通知栏提醒
-// });

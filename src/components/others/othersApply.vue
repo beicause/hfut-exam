@@ -55,8 +55,7 @@
 import axios from 'axios'
 import Qs from 'qs'
 import {host} from '../../common/network'
-import {MessageBox} from 'mint-ui';
-import {Indicator} from 'mint-ui';
+import {Indicator,MessageBox} from 'mint-ui';
 
 export default {
   data() {
@@ -190,7 +189,7 @@ export default {
     getDayOfIt() {
       let token = localStorage.token;
       // 没有完成的监考
-      axios.get(host.ip + "/teacher/unfinished", {
+      axios.get(host.ip + "/teacher/MyInvigilate", {
         headers: {
           'token': token
         },

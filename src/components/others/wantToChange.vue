@@ -28,7 +28,6 @@
 <script>
 import axios from 'axios'
 import {host} from '../../common/network'
-import { MessageBox } from 'mint-ui';
 import { Indicator } from 'mint-ui';
 
 export default {
@@ -84,7 +83,7 @@ export default {
         getAllCourse() {
             let token = localStorage.token;
             // 没有完成的监考
-            axios.get(host.ip + "/teacher/unfinished", {
+            axios.get(host.ip + "/teacher/MyInvigilate", {
                 headers: {
                     'token': token
                 },
