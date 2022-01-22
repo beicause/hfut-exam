@@ -48,7 +48,6 @@
 <script>
 import axios from 'axios';
 import Qs from 'qs';
-import { Android } from '../../common/utils.js';
 import { host, getTeacherInfo, logout } from '../../common/network.js'
 import store from '../../store/index.js';
 import tabBar from './tabBar.vue'
@@ -138,9 +137,6 @@ export default {
         if (res.data.code === 0) {
           this.name = res.data.data.name
           localStorage.name = this.name
-
-          Android.setAlias(this.name)
-
         } else {
           this.$notify({
             title: '',

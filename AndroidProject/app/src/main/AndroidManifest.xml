@@ -2,27 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   package="edu.hfutsoft.teacherexam">
-  <!-- Required -->
-  <permission
-    android:name="${applicationId}.permission.JPUSH_MESSAGE"
-    android:protectionLevel="signature" />
-
-  <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
   <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-  <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
-    tools:ignore="QueryAllPackagesPermission" />
-  <uses-permission android:name="android.permission.GET_TASKS" />
-  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
-    tools:ignore="ProtectedPermissions" />
-  <!-- 如您需要对应设备通知相关的能力，建议集成以下权限（可选）-->
-  <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" /><!-- 华为角标 -->
-  <uses-permission android:name="com.vivo.notification.permission.BADGE_ICON" /><!-- VIVO角标权限 -->
-  <uses-permission android:name="android.permission.VIBRATE" /><!--振动器权限，JPUSH支持通知开启振动功能，小米推送必须-->
 
   <application
     android:allowBackup="true"
@@ -31,7 +11,6 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.AndroidProject"
-    android:name=".App"
     android:usesCleartextTraffic="true">
     <activity
       android:name="edu.hfutsoft.teacherexam.MainActivity"
@@ -42,24 +21,5 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <!-- 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
-    <service android:name=".JPushService"
-      android:enabled="true"
-      android:exported="false"
-      android:process=":pushcore">
-      <intent-filter>
-        <action android:name="cn.jiguang.user.service.action" />
-      </intent-filter>
-    </service>
-    <!-- User defined. 用户自定义 Receiver 接收被拉起回调-->
-    <!-- 自定义 Receiver 组件，继承cn.jpush.android.service.WakedResultReceiver类,复写onWake(int wakeType)或 onWake(Context context, int wakeType)方法以监听被拉起 -->
-    <receiver android:name=".JPushReceiver"
-      android:exported="false">
-      <intent-filter>
-        <action android:name="cn.jpush.android.intent.WakedReceiver" />
-        <category android:name="${applicationId}" />
-      </intent-filter>
-    </receiver>
   </application>
-
 </manifest>

@@ -9,10 +9,8 @@ import android.view.KeyEvent
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import cn.jpush.android.api.JPushInterface
 import com.tencent.smtt.export.external.interfaces.ConsoleMessage
 import com.tencent.smtt.sdk.WebChromeClient
-import com.tencent.smtt.sdk.WebSettings
 import com.tencent.smtt.sdk.WebView
 import java.util.*
 
@@ -33,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         android.Manifest.permission.READ_PHONE_STATE
       ) == PackageManager.PERMISSION_DENIED
     )
-      JPushInterface.requestPermission(this)
 
     findViewById<WebView>(R.id.wv).apply {
       settings.javaScriptEnabled = true
@@ -53,7 +50,6 @@ class MainActivity : AppCompatActivity() {
           return super.onConsoleMessage(consoleMessage)
         }
       }
-      addJavascriptInterface(JavaScriptInterface(this@MainActivity), "Android")
       loadUrl("https://qingcheng.asia/hfutexam/")
     }
   }

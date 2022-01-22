@@ -1,6 +1,5 @@
 import axios from 'axios'
 import store from '../store'
-import { Android } from './utils'
 
 export const host = {
     ip: 'http://47.97.113.162:8080'
@@ -57,7 +56,6 @@ export async function cancelExchange(token, invigilateCode) {
 export function logout() {
     localStorage.clear();
     store.commit('updateListMyInvigilate', [])
-    Android.deleteAlias()
 }
 
 export async function changePwd(token, newPassword, password) {

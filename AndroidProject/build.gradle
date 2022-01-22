@@ -4,15 +4,10 @@ buildscript {
     google()
     mavenCentral()
     jcenter()
-
-    // 配置HMS Core SDK的Maven仓地址。
-    maven { url 'https://developer.huawei.com/repo/' }
   }
   dependencies {
     classpath "com.android.tools.build:gradle:7.0.2"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
-    // 增加agcp插件配置。
-    classpath 'com.huawei.agconnect:agcp:1.5.2.300'
   }
 }
 

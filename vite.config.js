@@ -16,6 +16,9 @@ export default defineConfig({
       find: '@', replacement: path.resolve(__dirname, 'src')
     }]
   },
+  build:{
+    cssTarget:'chrome61'
+  },
   publicDir:"static",
   base: './'
 })

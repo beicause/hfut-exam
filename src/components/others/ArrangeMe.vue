@@ -12,7 +12,7 @@
           <h3 :style="getColor(item.examCode)">
             {{ item.name }}
             <span
-              v-if="isNotUnfinished(item.examStateEnum)"
+              v-if="waitReplace(item.examStateEnum)"
               style="color: #FA5858; font-size: 15px"
             >{{isToBeConfirmed(item.examStateEnum)?'（有人请求，点击确认）': '（等待调换中）'}}</span>
           </h3>
@@ -26,13 +26,13 @@
           @click.stop="changeIt(item.invigilateCode, item.examStateEnum)"
         >
           <el-button
-            :style="isNotUnfinished(item.examStateEnum) ? { 'border-color': '#fa5858', 'background-color': '#fa5858' } : {}"
+            :style="waitReplace(item.examStateEnum) ? { 'border-color': '#fa5858', 'background-color': '#fa5858' } : {}"
             type="primary"
             circle
           >
             <icon
               style="width: 24px;height: 24px;"
-              :icon="isNotUnfinished(item.examStateEnum) ? 'bpmn:end-event-cancel' : 'tabler:exchange'"
+              :icon="waitReplace(item.examStateEnum) ? 'bpmn:end-event-cancel' : 'tabler:exchange'"
             ></icon>
           </el-button>
         </div>
@@ -88,18 +88,18 @@ export default {
         background: c.bg, color: c.fo
       }
     },
-    isNotUnfinished(state) {
-      return state !== 'UNFINISHED'
+    waitReplace(state) {
+      return state === 'TO_BE_REPLACED'||state==='TO_BE_CONFIRMED'
     },
     isToBeConfirmed(state){
       return state ==='TO_BE_CONFIRMED'
     },
     changeIt(invigilateCode, examStateEnum) {
       const token = localStorage.token;
-      const msg = this.isNotUnfinished(examStateEnum) ? '确认撤销请求吗？' : '确认提出调换申请吗?'
+      const msg = this.waitReplace(examStateEnum) ? '确认撤销请求吗？' : '确认提出调换申请吗?'
       MessageBox.confirm(msg).then(action => {
         (
-          this.isNotUnfinished(examStateEnum)
+          this.waitReplace(examStateEnum)
             ? cancelExchange(token, invigilateCode) : startExchange(token, invigilateCode)
         ).then(suc => {
           if (suc.data.code !== 0) throw Error()
