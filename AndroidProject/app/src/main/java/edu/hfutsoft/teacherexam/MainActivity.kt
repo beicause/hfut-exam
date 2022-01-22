@@ -50,7 +50,8 @@ class MainActivity : AppCompatActivity() {
           return super.onConsoleMessage(consoleMessage)
         }
       }
-      loadUrl("https://qingcheng.asia/hfutexam/")
+//      loadUrl("https://qingcheng.asia/hfutexam/")
+      loadUrl("file:///android_asset/dist/index.html")
     }
   }
 
