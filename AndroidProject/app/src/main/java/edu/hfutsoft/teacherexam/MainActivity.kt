@@ -26,19 +26,10 @@ class MainActivity : AppCompatActivity() {
 
     setContentView(R.layout.activity_main)
 
-    if (ContextCompat.checkSelfPermission(
-        this,
-        android.Manifest.permission.READ_PHONE_STATE
-      ) == PackageManager.PERMISSION_DENIED
-    )
-
     findViewById<WebView>(R.id.wv).apply {
       settings.javaScriptEnabled = true
       settings.domStorageEnabled = true
-//      设置缓存可以加载更快，但还需要有缓存更新的策略，我先不设置
-//      settings.cacheMode=WebSettings.LOAD_CACHE_ELSE_NETWORK
-      /** @see android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW*/
-      settings.mixedContentMode=0
+      settings.setAllowFileAccessFromFileURLs(true)
       webChromeClient = object : WebChromeClient() {
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
           consoleMessage?.apply {
@@ -50,7 +41,6 @@ class MainActivity : AppCompatActivity() {
           return super.onConsoleMessage(consoleMessage)
         }
       }
-//      loadUrl("https://qingcheng.asia/hfutexam/")
       loadUrl("file:///android_asset/dist/index.html")
     }
   }

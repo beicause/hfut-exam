@@ -8,9 +8,6 @@
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:
--keepclassmembers class edu.hfutsoft.teacherexam.JavaScriptInterface {
-   public *;
-}
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
@@ -25,16 +22,6 @@
   public static *;
 }
 
-# jPush
--dontoptimize
--dontpreverify
-
--dontwarn cn.jpush.**
--keep class cn.jpush.** { *; }
--keep class * extends cn.jpush.android.service.JPushMessageReceiver { *; }
--dontwarn cn.jiguang.**
--keep class cn.jiguang.** { *; }
-
 # TBS
 -dontwarn dalvik.**
 -dontwarn com.tencent.smtt.**
@@ -46,14 +33,3 @@
 -keep class com.tencent.tbs.** {
     *;
 }
-
-# hms
--ignorewarnings
--keepattributes *Annotation*
--keepattributes Exceptions
--keepattributes InnerClasses
--keepattributes Signature
--keepattributes SourceFile,LineNumberTable
--keep class com.huawei.hianalytics.**{*;}
--keep class com.huawei.updatesdk.**{*;}
--keep class com.huawei.hms.**{*;}
